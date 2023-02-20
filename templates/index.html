@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .header a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+{% if request.session.user %}
+<div class="header">
+    <h1> Welcome to our store!</h1>
+    <a href="{% url 'mycart' %}">{{ request.session.user.username }}, Your Cart</a>
+</div>
+{% else %}
+<div class="header">
+    <h1>Please <a href="{% url 'login' %}">log in</a>!</h1>
+</div>
+{% endif %}
+
+{% if messages %}
+{% for m in messages %}
+    {{ m }}
+{% endfor %}
+{% endif %}
+
+{% block content %}
+
+  <div style="white-space: nowrap;">
+    {% for product in product_list %}
+      <div style="display: inline-block; margin-right: 20px;">
+        <h2>  <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a> </h2>
+        <p>{{ product.description }}</p>
+        <p>Price: {{ product.price }}</p>
+        <img src="{{ product.img_url }}" alt="{{ product.name }}" style="width: 150px;">
+        <form method="POST" ACTION="{% url 'add2cart' product.id %}">
+            {% csrf_token %}
+            <button type="submit">Add to Cart</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Shopping Cart</title>
+</head>
+<body>
+
+<a href="{% url 'index' %}">HomePage</a>
+
+{% if items_in_cart %}
+    <h2>Hello {{ user_name }}! Welcome to your shopping cart:</h2>
+    <ul>
+    {% for item in items_in_cart %}
+        <li>
+            <h3>Product Name: {{ item.0 }}</h3>
+            <p>Product Quantity: {{ item.1 }}</p>
+            <p>Unit Price: {{ item.2 }}</p>
+            <p>Subtotal Price: {{ item.3 }}</p>
+        </li>
+
+
+        <style>
+            .btn-group {
+                display: flex;
+            }
+            .btn-group form {
+                margin-right: 10px;
+            }
+        </style>
+
+        <div class="btn-group">
+            <form method="POST" ACTION="{% url 'cart_adjust' item.5 'ADD' %}">
+                {% csrf_token %}
+                <button type="submit"> + </button>
+            </form>
+
+            <form method="POST" ACTION="{% url 'cart_adjust' item.5 'SUB' %}">
+                {% csrf_token %}
+                <button type="submit"> - </button>
+            </form>
+
+            <form method="POST" ACTION="{% url 'cart_adjust' item.5 'DEL' %}">
+                {% csrf_token %}
+                <button type="submit"> DELETE </button>
+            </form>
+        </div>
+
+    {% endfor %}
+    </ul>
+    <h2>Total Price: {{ total_price }}</h2>
+{% else %}
+    <h2>Your shopping cart is empty.</h2>
+{% endif %}
+
+</body>
+</html>
