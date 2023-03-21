@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 from product.models import User, Product, ShoppingCart
 
-
 def login_view(request):
     if request.method == 'POST':
         user_row = User.objects.filter(name=request.POST['username'], password=request.POST['password']).first()

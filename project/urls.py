@@ -27,3 +27,4 @@ urlpatterns = [
     path('cart_adjust/<int:cart_item_id><str:operation>', views.cart_adjust, name='cart_adjust'),
     path('product_detail/<int:product_id>', views.product_detail, name='product_detail'),
 ]
+
